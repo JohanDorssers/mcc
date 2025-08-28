@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "mcc": {
+      "commandName": "Project",
+      "commandLineArgs": ".\\example.mc",
+      "workingDirectory": "C:\\dev\\c#\\mcc\\mcc"
+    }
+  }
+}

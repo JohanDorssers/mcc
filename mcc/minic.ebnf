@@ -1,0 +1,48 @@
+program                 = { constant }, { variable }, subroutines ;
+constant                = "const", simpleType, identifier, "=", literal, ";" ;
+simpleType              = "byte" | "char" | "integer" | "string" | "bool" ;
+literal                 = byteLiteral | charLiteral | integerLiteral | stringLiteral | boolLiteral ;
+identifier              = alpha, { alpha | digit | "_" } ;
+alpha                   = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" 
+                        | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" 
+                        | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" 
+                        | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+digit                   = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+symbol                  = ANY_CHARACTER_EXCEPT_ALPHA_DIGIT;
+character               = alpha | digit | symbol ;
+number                  = [ "+" | "-" ], digit, { digit } ;
+byteLiteral             = number ; (* 1 byte: -127 .. 128 *)  
+charLiteral             = "'", character, "'" ;
+integerLiteral          = number ; (*2 bytes: -32766 .. 32767*) 
+stringLiteral           = '"', { character }, '"';
+boolLiteral             = "true" | "false" ;
+variable                = "var", identifierList, ":", simpleType, ";" ;
+identifierList          = identifier, { ",", identifier } ;
+subroutines             = startFunction, { subroutine } ;
+startFunction           = "start", compoundStatement ;
+subroutine              = "sub", identifier, compoundStatement ;
+compoundStatement       = "{", statements, "}" ;
+statements              = { statement } ;
+statement               = assignmentStatement 
+                        | ifStatement 
+                        | whileStatement 
+                        | returnStatement 
+                        | printStatement 
+                        | jumpStatement
+                        | compoundStatement
+                        | ";" ;
+assignmentStatement     = identifier, "=", expression, ";" ;
+ifStatement             = "if (", expression, ")", statement
+                        | "if (", expression, ")", statement, "else", statement ;
+whileStatement          = "while (", expression, ")", statement ; 
+returnStatement         = "return;" ;
+printStatement          = "print", expression, ";" ;
+jumpStatement           = "jump", identifier, ";" ;
+expression              = "(", expression, ")" 
+                        | literal
+                        | identifier
+                        | expression, binaryOperator, expression 
+                        | unaryOperator, expression ;
+binaryOperator          = "==" | "!=" | "<" | ">" | "<=" | ">="
+                        | "*" | "/" | "+" | "-" ;
+unaryOperator           = "-" | "!" ;
